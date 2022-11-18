@@ -13,6 +13,10 @@ class Room(Base):
 
     employee_list: [Request] = relationship("Request", back_populates="employee", viewonly=False)
 
-    def __init__(self, building_type: str, number: int):
-        self.building_type = building_type
+    type = relationship("BuildingType", back_populates="rooms")
+
+    def __init__(self, building_type, number: int):
+        self.building_type = building_type.type
         self.number = number
+
+        self.type = building_type

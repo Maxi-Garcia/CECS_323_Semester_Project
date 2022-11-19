@@ -10,13 +10,14 @@ def main():
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
     logging.getLogger("sqlalchemy.pool").setLevel(logging.DEBUG)
 
-    # Drop For Development
-    metadata.drop_all(bind=engine)
-
     # Create Tables for Entity Classes
     metadata.create_all(bind=engine)
 
-    ClassHandling.test_building()
+    building = ClassHandling.addBuilding("CECS")
+    room = ClassHandling.addRoom(building, 303)
+    door_name = ClassHandling.addDoorName("Front")
+    door = ClassHandling.addDoor(building, room, door_name)
+    print(f"\t{door_name.location} in Room {building.type} {room.number} with ID {door.id}")
 
 
 if __name__ == '__main__':

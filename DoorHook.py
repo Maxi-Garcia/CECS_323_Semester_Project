@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
 from main import Base
@@ -6,8 +6,8 @@ from main import Base
 
 class DoorHook(Base):
     __tablename__ = "door_hook_junction"
-    hook_id = Column("hook_id", Integer, nullable=False, primary_key=True)
-    door_id = Column("door_id", Integer, nullable=False, primary_key=True)
+    hook_id = Column("hook_id", Integer, ForeignKey("hooks.id"), nullable=False, primary_key=True)
+    door_id = Column("door_id", Integer, ForeignKey("doors.id"), nullable=False, primary_key=True)
 
     door = relationship("Door", back_populates="hook_list")
     hook = relationship("Hook", back_populates="door_list")

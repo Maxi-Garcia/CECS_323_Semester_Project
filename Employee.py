@@ -10,7 +10,7 @@ class Employee(Base):
     id = Column("id", Integer, Sequence("employee_id_seq"), nullable=False, primary_key=True)
     name = Column("name", String(40), nullable=False, primary_key=False)
 
-    room_list: [Request] = relationship("Request", back_populates="room", viewonly=False)
+    room_list: [Request] = relationship("Request")
 
     def __int__(self, id: int, name: str):
         self.id = id

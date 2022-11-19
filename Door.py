@@ -1,4 +1,4 @@
-from sqlalchemy import String, Column, ForeignKey, Integer, ForeignKeyConstraint, Sequence
+from sqlalchemy import String, Column, ForeignKey, Integer, ForeignKeyConstraint, Sequence, Identity
 from sqlalchemy.orm import relationship
 
 import DoorHook
@@ -9,9 +9,9 @@ from DoorHook import DoorHook
 
 class Door(Base):
     __tablename__ = "doors"
-    id = Column("id", Integer, Sequence("door_id_seq"), nullable=False, primary_key=True)
+    id = Column("id", Integer, Identity(start=0, cycle=True), nullable=False, primary_key=True)
     building_type = Column("building_type", String(40), nullable=False, primary_key=False)
-    room_number = Column("room_number", Integer(), nullable=False, primary_key=False)
+    room_number = Column("room_number", Integer, nullable=False, primary_key=False)
     location = Column("location", String(40), ForeignKey("door_names.location"), nullable=False, primary_key=False)
 
     location_relationship = relationship("DoorName")
@@ -21,10 +21,9 @@ class Door(Base):
 
     hook_list: [DoorHook] = relationship("DoorHook", back_populates="door", viewonly=False)
 
-    def __init__(self, id: int, building_type: str, number: int, location: str):
-        self.id = id
+    def __init__(self, building_type, room_number, location):
         self.building_type = building_type
-        self.number = number
+        self.room_number = room_number
         self.location = location
         self.door_hook_list = []
 

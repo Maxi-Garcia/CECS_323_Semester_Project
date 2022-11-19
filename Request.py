@@ -5,6 +5,8 @@ from sqlalchemy.orm import relationship
 
 from main import Base
 
+from Employee import Employee
+
 
 class Request(Base):
     __tablename__ = "requests"
@@ -15,12 +17,10 @@ class Request(Base):
     building_type = Column("building_type", String(40), nullable=False, primary_key=False)
     key_id = Column("key_id", Integer, ForeignKey("key_copies.key_id"), nullable=False, primary_key=False)
 
-    request_relationship = relationship("Request")
-
     table_args = (ForeignKeyConstraint((building_type, rooms_number),
                                        ["rooms.building_type", "rooms.number"]))
 
-    employee = relationship("Employee", back_populates="request_list")
+    employee = relationship("Employee", back_populates="room_list")
     room = relationship("Room", back_populates="employee_list")
 
     def __init__(self, requests_id: int, borrow_date: datetime, employees_id: int, rooms_number: int,

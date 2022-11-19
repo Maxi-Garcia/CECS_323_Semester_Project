@@ -18,6 +18,11 @@ def main():
     door_name = ClassHandling.addDoorName("Front")
     door = ClassHandling.addDoor(building, room, door_name)
     print(f"\t{door_name.location} in Room {building.type} {room.number} with ID {door.id}")
+    employees = ClassHandling.getEmployees("Jared")
+    print(employees)
+    employee = ClassHandling.addEmployee("Jared Seville")
+    print(employee)
+    print(ClassHandling.getEmployees("Jared"))
 
 
 if __name__ == '__main__':

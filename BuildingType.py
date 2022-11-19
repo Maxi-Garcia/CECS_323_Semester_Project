@@ -13,3 +13,9 @@ class BuildingType(Base):
 
     def __init__(self, type: str):
         self.type = type
+
+    def __str__(self):
+        return f"{self.type}"
+
+    def __repr__(self):
+        return self.__str__

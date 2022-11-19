@@ -14,8 +14,6 @@ class Door(Base):
     room_number = Column("room_number", Integer, nullable=False, primary_key=False)
     location = Column("location", String(40), ForeignKey("door_names.location"), nullable=False, primary_key=False)
 
-    location_relationship = relationship("DoorName")
-
     table_args = (ForeignKeyConstraint((building_type, room_number),
                                        ["rooms.building_type", "rooms.number"]))
 
@@ -35,3 +33,9 @@ class Door(Base):
         door_hook = DoorHook(hook, self)
         hook.door_list.append(door_hook)
         self.hook_list.append(door_hook)
+
+    def __str__(self):
+        return f"Door with ID {self.id} at {self.location} of {self.building_type} {self.room_number}"
+
+    def __repr__(self):
+        return self.__str__()

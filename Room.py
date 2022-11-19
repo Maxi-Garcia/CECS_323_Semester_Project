@@ -18,3 +18,9 @@ class Room(Base):
     def __init__(self, building_type: str, number: int):
         self.building_type = building_type
         self.number = number
+
+    def __str__(self):
+        return f"{self.building_type} {self.number}"
+
+    def __repr__(self):
+        return self.__str__()

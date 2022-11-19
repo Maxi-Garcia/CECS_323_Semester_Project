@@ -1,6 +1,7 @@
 from BuildingType import BuildingType
 from Door import Door
 from DoorName import DoorName
+from Employee import Employee
 from Room import Room
 from main import Session
 from sqlalchemy import exc, select
@@ -123,9 +124,7 @@ def getDoor(building: BuildingType or Room or str, number: Room or int, location
         statement = select(Door).filter(
             (Door.location == location) & (Door.room_number == number) & (Door.building_type == building)
         )
-        print(statement)
         result = sess.execute(statement)
-        print(result)
         for item in result.scalars():
             return item
     return None
@@ -146,4 +145,33 @@ def addDoor(building: BuildingType or Room or str, number: Room or int, location
         return door
     except exc.SQLAlchemyError as error:
         print("Add Door Failed:", error)
+        return None
+
+
+def getEmployees(name: str) -> [Employee]:
+    returnList: [Employee] = list()
+    with Session() as sess:
+        statement = select(Employee).filter((Employee.name.contains(name)))
+        print(statement)
+        result = sess.execute(statement)
+        print(result)
+        for item in result.scalars():
+            returnList.append(item)
+    return returnList
+
+
+def addEmployee(name: str, force: bool = False) -> Employee or None:
+    if not force:
+        if len(getEmployees(name)) != 0:
+            print("There are employees with this name, not adding...")
+            return
+    print("There are no employees with this name, adding...")
+    employee: Employee = Employee(name)
+    try:
+        with Session() as sess:
+            sess.add(employee)
+            sess.commit()
+        return employee
+    except exc.SQLAlchemyError as error:
+        print("Add Employee Failed:", error)
         return None

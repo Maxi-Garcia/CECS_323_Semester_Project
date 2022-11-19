@@ -10,9 +10,6 @@ def main():
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
     logging.getLogger("sqlalchemy.pool").setLevel(logging.DEBUG)
 
-    # Create Tables for Entity Classes
-    metadata.create_all(bind=engine)
-
     building = ClassHandling.addBuilding("CECS")
     room = ClassHandling.addRoom(building, 303)
     door_name = ClassHandling.addDoorName("Front")

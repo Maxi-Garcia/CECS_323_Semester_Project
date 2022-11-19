@@ -17,16 +17,16 @@ class Door(Base):
     table_args = (ForeignKeyConstraint((building_type, room_number),
                                        ["rooms.building_type", "rooms.number"]))
 
-    hook_list: [DoorHook] = relationship("DoorHook", back_populates="door", viewonly=False)
+    hook_list: [DoorHook] = relationship("DoorHook", back_populates="door", viewonly=False, lazy="subquery")
 
     def __init__(self, building_type, room_number, location):
         self.building_type = building_type
         self.room_number = room_number
         self.location = location
-        self.door_hook_list = []
+        self.hook_list = list()
 
     def add_hook(self, hook: Hook):
-        for door_hook in self.door_hook_list:
+        for door_hook in self.hook_list:
             if door_hook == hook:
                 return
 

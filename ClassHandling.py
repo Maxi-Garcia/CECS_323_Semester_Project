@@ -2,6 +2,7 @@ from BuildingType import BuildingType
 from Door import Door
 from DoorName import DoorName
 from Employee import Employee
+from Hook import Hook
 from Room import Room
 from main import Session
 from sqlalchemy import exc, select
@@ -152,9 +153,7 @@ def getEmployees(name: str) -> [Employee]:
     returnList: [Employee] = list()
     with Session() as sess:
         statement = select(Employee).filter((Employee.name.contains(name)))
-        print(statement)
         result = sess.execute(statement)
-        print(result)
         for item in result.scalars():
             returnList.append(item)
     return returnList
@@ -175,3 +174,29 @@ def addEmployee(name: str, force: bool = False) -> Employee or None:
     except exc.SQLAlchemyError as error:
         print("Add Employee Failed:", error)
         return None
+
+
+def getHook(hook_id: int) -> Hook or None:
+    with Session() as sess:
+        statement = select(Hook).filter((Hook.id == hook_id))
+        result = sess.execute(statement)
+        for item in result.scalars():
+            return item
+    return None
+
+
+def addHook(hook_id: int, doors: [Door] = None) -> Hook or None:
+    hook: Hook = getHook(hook_id)
+    if hook is not None:
+        with Session() as sess:
+            for door in doors:
+                hook.add_door(door)
+            sess.commit()
+        return hook
+    with Session() as sess:
+        hook = Hook(hook_id)
+        sess.add(hook)
+        for door in doors:
+            hook.add_door(door)
+        sess.commit()
+    return hook

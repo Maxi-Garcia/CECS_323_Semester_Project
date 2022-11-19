@@ -15,3 +15,9 @@ class DoorHook(Base):
     def __init__(self, hook_id: int, door_id: int):
         self.hook_id = hook_id
         self.door_id = door_id
+
+    def __str__(self):
+        return f"Hook {self.hook_id} → Door {self.door_id}"
+
+    def __repr__(self):
+        return self.__str__()

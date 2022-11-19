@@ -23,6 +23,9 @@ def main():
     employee = ClassHandling.addEmployee("Jared Seville")
     print(employee)
     print(ClassHandling.getEmployees("Jared"))
+    hook = ClassHandling.getHook(1)
+    print(hook)
+    hook = ClassHandling.addHook(1, [door])
 
 
 if __name__ == '__main__':

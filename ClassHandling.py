@@ -3,6 +3,7 @@ from Door import Door
 from DoorName import DoorName
 from Employee import Employee
 from Hook import Hook
+from KeyCopy import KeyCopy
 from Room import Room
 from main import Session
 from sqlalchemy import exc, select
@@ -198,5 +199,38 @@ def addHook(hook_id: int, doors: [Door] = None) -> Hook or None:
         sess.add(hook)
         for door in doors:
             hook.add_door(door)
+        sess.commit()
+    return hook
+
+
+def getKey(key_id: int) -> KeyCopy or None:
+    with Session() as sess:
+        statement = select(Hook).filter((KeyCopy.key_id == key_id))
+        result = sess.execute(statement)
+        for item in result.scalars():
+            return item
+    return None
+
+
+def getKeys(hook: int or Hook) -> [KeyCopy]:
+    returnList = list()
+    hook: int = hook.id if type(hook) is Hook else hook
+    with Session() as sess:
+        statement = select(Hook).filter((KeyCopy.hooks_id == hook))
+        result = sess.execute(statement)
+        for item in result.scalars():
+            returnList.append(item)
+    return returnList
+
+
+def addKey(key_id: int, hook: Hook or int) -> KeyCopy or None:
+    hook: int = hook.id if type(hook) is Hook else hook
+    key: KeyCopy = getKey(hook)
+    if key is not None:
+        print("Key already exists:", key)
+        return key
+    with Session() as sess:
+        key = KeyCopy(key_id, hook)
+        sess.add(key)
         sess.commit()
     return hook

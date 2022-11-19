@@ -23,6 +23,11 @@ def main():
     hook = ClassHandling.getHook(1)
     print(hook)
     hook = ClassHandling.addHook(1, [door])
+    print(hook)
+    key = ClassHandling.getKey(1)
+    print(key)
+    key = ClassHandling.addKey(1, 1)
+    print(key)
 
 
 if __name__ == '__main__':

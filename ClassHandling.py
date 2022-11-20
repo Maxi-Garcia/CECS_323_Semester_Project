@@ -62,7 +62,7 @@ def getRoom(building: str, number: int) -> Room or None:
     :return: Room if it exists, None otherwise.
     """
     with Session() as sess:
-        statement = select(Room).where(Room.building_type == building and Room.number == number)
+        statement = select(Room).filter((Room.building_type == building) & (Room.number == number))
         result = sess.execute(statement)
         for item in result.scalars():
             return item
@@ -95,7 +95,7 @@ def addRoom(building: BuildingType or str, number: int) -> Room or None:
 
 def getDoorName(location: str) -> DoorName or None:
     with Session() as sess:
-        statement = select(DoorName).where(DoorName.location == location)
+        statement = select(DoorName).filter((DoorName.location == location))
         result = sess.execute(statement)
         for item in result.scalars():
             return item

@@ -16,9 +16,9 @@ def main():
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
     logging.getLogger("sqlalchemy.pool").setLevel(logging.DEBUG)
 
-    building: BuildingType = ClassHandling.addBuilding("CECS")
-    room: Room = ClassHandling.addRoom(building, 303)
-    doorName: DoorName = ClassHandling.addDoorName("South")
+    building: BuildingType = ClassHandling.addBuilding("VEC")
+    room: Room = ClassHandling.addRoom(building, 300)
+    doorName: DoorName = ClassHandling.addDoorName("North")
     print(building)
     print(room)
     print(doorName)

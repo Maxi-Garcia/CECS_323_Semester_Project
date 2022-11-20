@@ -210,6 +210,15 @@ def getHook(hook_id: int) -> Hook or None:
     return None
 
 
+def getHooks() -> [Hook]:
+    hookList = []
+    with Session() as sess:
+        statement = select(Hook)
+        result = sess.execute(statement)
+        for item in result.scalars():
+            hookList.append(item)
+    return hookList
+
 def addHook(hook_id: int, doors: [Door] = None) -> Hook or None:
     hook: Hook = getHook(hook_id)
     if hook is not None:

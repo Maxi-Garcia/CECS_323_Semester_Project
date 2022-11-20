@@ -12,7 +12,7 @@ class Hook(Base):
     __tablename__ = "hooks"
     id = Column("id", Integer, Identity(start=0, cycle=True), nullable=False, primary_key=True)
 
-    keys: [KeyCopy] = relationship("KeyCopy")
+    keys: [KeyCopy] = relationship("KeyCopy", lazy="subquery")
     door_list: [DoorHook] = relationship("DoorHook", back_populates="hook", viewonly=False, lazy="subquery")
 
     def __init__(self, id_: int):

@@ -9,7 +9,7 @@ class KeyCopy(Base):
     key_id = Column("key_id", Integer, Sequence('key_id_seq'), nullable=False, primary_key=True)
     hooks_id = Column("hooks_id", Integer, ForeignKey("hooks.id"), nullable=False, primary_key=False)
 
-    hook = relationship("Hook", back_populates="keys")
+    hook = relationship("Hook", back_populates="keys", lazy="subquery")
 
     def __init__(self, key_id: int, hooks_id: int):
         self.key_id = key_id

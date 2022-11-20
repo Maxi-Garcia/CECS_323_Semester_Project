@@ -127,8 +127,8 @@ def getDoor(building: BuildingType or Room or str, number: Room or int, location
     :return: Room if it exists, None otherwise.
     """
     building: str = building.type if type(building) is BuildingType else building.building_type if type(building) is Room else building
-    number: int = Room.number if type(number) is Room else number
-    location: str = DoorName.location if type(location) is DoorName else location
+    number: int = number.number if type(number) is Room else number
+    location: str = location.location if type(location) is DoorName else location
     with Session() as sess:
         statement = select(Door).filter(
             (Door.location == location) & (Door.room_number == number) & (Door.building_type == building)
@@ -139,19 +139,36 @@ def getDoor(building: BuildingType or Room or str, number: Room or int, location
     return None
 
 
+def getDoors(key: KeyCopy or int) -> [Door]:
+    key: KeyCopy = getKey(key) if type(key) is int else key
+    if key is None:
+        return list()
+    hook: Hook = getHook(key.hooks_id)
+    if hook is None:
+        return list()
+    returnList: [Door] = list()
+    doorHook: DoorHook
+    with Session() as sess:
+        for doorHook in hook.door_list:
+            statement = select(Door).filter((Door.id == doorHook.door_id))
+            for door in sess.execute(statement).scalars():
+                returnList.append(door)
+    return returnList
+
+
 def addDoor(building: BuildingType or Room or str, number: Room or int, location: DoorName or str) -> Door or None:
     match = getDoor(building, number, location)
     if match is not None:
         return match
     building: str = building.type if type(building) is BuildingType else building.building_type if type(building) is Room else building
-    number: int = Room.number if type(number) is Room else number
-    location: str = DoorName.location if type(location) is DoorName else location
-    door = Door(building, number, location)
+    number: int = number.number if type(number) is Room else number
+    location: str = location.location if type(location) is DoorName else location
     try:
         with Session() as sess:
+            door = Door(building, number, location)
             sess.add(door)
             sess.commit()
-        return door
+            return door
     except exc.SQLAlchemyError as error:
         print("Add Door Failed:", error)
         return None
@@ -232,7 +249,7 @@ def getKeys(hook: int or Hook) -> [KeyCopy]:
 
 def addKey(key_id: int, hook: Hook or int) -> KeyCopy or None:
     hook: int = hook.id if type(hook) is Hook else hook
-    key: KeyCopy = getKey(hook)
+    key: KeyCopy = getKey(key_id)
     if key is not None:
         print("Key already exists:", key)
         return key
@@ -240,7 +257,7 @@ def addKey(key_id: int, hook: Hook or int) -> KeyCopy or None:
         key = KeyCopy(key_id, hook)
         sess.add(key)
         sess.commit()
-    return hook
+    return key
 
 
 def getRequestStatus(request: Request or int) -> RequestStatus:
@@ -259,7 +276,6 @@ def getRequestStatus(request: Request or int) -> RequestStatus:
 
 def makeRequest(employee: int or Employee, building: BuildingType or Room or str, room_number: Room or int) -> Request or None:
     # Normalize inputs
-    print(f"PEA DEBUG: {employee}")
     employee: int = employee.id if type(employee) is Employee else employee
     building: str = building.type if type(building) is BuildingType else building.building_type if type(building) is Room else building
     room_number: int = room_number.number if type(room_number) is Room else room_number
@@ -309,12 +325,10 @@ def makeRequest(employee: int or Employee, building: BuildingType or Room or str
         # Assign a key and datetime
         key: KeyCopy = valid_keys[0]
         dateTime: datetime = datetime.now()
-        print(f"PEA DEBUG: {dateTime} {employee} {room_number} {building} {key}")
         request: Request = Request(dateTime, employee, room_number, building, key.key_id)
-        print("\tRequest:", request)
         sess.add(request)
         sess.commit()
-
+        sess.close()
         # Return request
         return request
 

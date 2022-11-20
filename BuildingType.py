@@ -9,7 +9,7 @@ class BuildingType(Base):
     __tablename__ = "building_types"
     type = Column("type", String(40), nullable=False, primary_key=True)
 
-    rooms: [Room] = relationship("Room", back_populates="type", viewonly=False)
+    rooms: [Room] = relationship("Room", back_populates="type", viewonly=False, lazy="subquery")
 
     def __init__(self, type: str):
         self.type = type

@@ -15,7 +15,7 @@ from Room import Room
 from main import Session
 from sqlalchemy import exc, select
 
-
+#returns a building
 def getBuilding(name: str) -> BuildingType or None:
     """
     Checks for a match in the database and returns its Object.
@@ -116,7 +116,7 @@ def addDoorName(location: str) -> DoorName or None:
         print("Add DoorName Failed:", error)
         return None
 
-
+#gets the room that has the door location
 def getDoor(building: BuildingType or Room or str, number: Room or int, location: DoorName or str) -> Door or None:
     """
     Checks for a match in the database and returns its Object.
@@ -138,6 +138,7 @@ def getDoor(building: BuildingType or Room or str, number: Room or int, location
             return item
     return None
 
+<<<<<<< Updated upstream
 
 def getDoors(key: KeyCopy or int) -> [Door]:
     key: KeyCopy = getKey(key) if type(key) is int else key
@@ -156,6 +157,9 @@ def getDoors(key: KeyCopy or int) -> [Door]:
     return returnList
 
 
+=======
+#adds a door based on building type string, room number, door name
+>>>>>>> Stashed changes
 def addDoor(building: BuildingType or Room or str, number: Room or int, location: DoorName or str) -> Door or None:
     match = getDoor(building, number, location)
     if match is not None:
@@ -173,7 +177,7 @@ def addDoor(building: BuildingType or Room or str, number: Room or int, location
         print("Add Door Failed:", error)
         return None
 
-
+#returns an employee
 def getEmployees(name: str) -> [Employee]:
     returnList: [Employee] = list()
     with Session() as sess:
@@ -183,7 +187,7 @@ def getEmployees(name: str) -> [Employee]:
             returnList.append(item)
     return returnList
 
-
+#adds an employee to the employee table
 def addEmployee(name: str, force: bool = False) -> Employee or None:
     if not force:
         if len(getEmployees(name)) != 0:
@@ -200,7 +204,7 @@ def addEmployee(name: str, force: bool = False) -> Employee or None:
         print("Add Employee Failed:", error)
         return None
 
-
+#returns / gets a hook
 def getHook(hook_id: int) -> Hook or None:
     with Session() as sess:
         statement = select(Hook).filter((Hook.id == hook_id))
@@ -209,7 +213,7 @@ def getHook(hook_id: int) -> Hook or None:
             return item
     return None
 
-
+#adds a hook
 def addHook(hook_id: int, doors: [Door] = None) -> Hook or None:
     hook: Hook = getHook(hook_id)
     if hook is not None:
@@ -226,7 +230,7 @@ def addHook(hook_id: int, doors: [Door] = None) -> Hook or None:
         sess.commit()
     return hook
 
-
+#gets an individual keys
 def getKey(key_id: int) -> KeyCopy or None:
     with Session() as sess:
         statement = select(Hook).filter((KeyCopy.key_id == key_id))
@@ -235,7 +239,7 @@ def getKey(key_id: int) -> KeyCopy or None:
             return item
     return None
 
-
+#gets keys associated with hooks
 def getKeys(hook: int or Hook) -> [KeyCopy]:
     returnList = list()
     hook: int = hook.id if type(hook) is Hook else hook

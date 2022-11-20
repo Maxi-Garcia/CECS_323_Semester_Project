@@ -29,51 +29,50 @@ def consoleUI() -> None:
 
         userPrompt = input()
         #Initial cases check; none of these call the functions
-        match userPrompt:
-            case 'a': #addKey
-                userInput = []
-                print('Enter a key_id: ')
-                key_id_prompt = input()
-                userInput.append(key_id_prompt)
-                print('Enter a hook to associate with the key: ')
-                hook_id_prompt = input()
-                userInput.append(hook_id_prompt)
-                ClassHandling.addKey(key_id_prompt,hook_id_prompt)
-            case 'b':#makeRequest
-                print('Enter an employee number: ')
-                employ_id_prompt = input()
-                print('Enter a building name: ')
-                build_name_prompt = input()
-                print('Enter a room number')
-                room_num_prompt = input()
-                ClassHandling.makeRequest(employ_id_prompt,build_name_prompt,room_num_prompt)
+        if userPrompt == 'a': #addKey
+            userInput = []
+            print('Enter a key_id: ')
+            key_id_prompt = input()
+            userInput.append(key_id_prompt)
+            print('Enter a hook to associate with the key: ')
+            hook_id_prompt = input()
+            userInput.append(hook_id_prompt)
+            ClassHandling.addKey(key_id_prompt,hook_id_prompt)
+        if userPrompt == 'b':#makeRequest
+            print('Enter an employee number: ')
+            employ_id_prompt = input()
+            print('Enter a building name: ')
+            build_name_prompt = input()
+            print('Enter a room number')
+            room_num_prompt = input()
+            ClassHandling.makeRequest(employ_id_prompt,build_name_prompt,room_num_prompt)
             #come back to this using Jared's suggestion
-            case 'c': #updateStatus on LOST key specifically
-                print('Enter Request ID: ')
-                request_id_prompt = input()
-                request_status = RequestStatus.LOST
-                ClassHandling.updateStatus(request_id_prompt,request_status)
-            case 'd': #getDoor; iterate through door list
-                print('')
-            case 'e': #deleteKey
-                print('')
-            case 'f': #deleteEmployee
-                print('')
-            case 'g': #addDoor
-                print('Enter building: ')
-                building_prompt = input()
-                print('Enter Room number: ')
-                room_num_prompt = input()
-                print('Enter Door Location: ')
-                location_prompt = input()
-                ClassHandling.addDoor(building_prompt,room_num_prompt,location_prompt)
-            case 'h': #deleteRequest then makeRequest with new employee
-                print('')
-            case 'i': #report all employees that can get into a room
-                print('')
-            case 'j': #finish
-                print('Done')
-                check = True
+        if userPrompt == 'c': #updateStatus on LOST key specifically
+            print('Enter Request ID: ')
+            request_id_prompt = input()
+            request_status = RequestStatus.LOST
+            ClassHandling.updateStatus(request_id_prompt,request_status)
+        if userPrompt == 'd': #getDoor; iterate through door list
+            print('')
+        if userPrompt == 'e': #deleteKey
+            print('')
+        if userPrompt == 'f': #deleteEmployee
+            print('')
+        if userPrompt == 'g': #addDoor
+            print('Enter building: ')
+            building_prompt = input()
+            print('Enter Room number: ')
+            room_num_prompt = input()
+            print('Enter Door Location: ')
+            location_prompt = input()
+            ClassHandling.addDoor(building_prompt,room_num_prompt,location_prompt)
+        if userPrompt == 'h': #deleteRequest then makeRequest with new employee
+            print('')
+        if userPrompt == 'i': #report all employees that can get into a room
+            print('')
+        if userPrompt == 'j': #finish
+            print('Done')
+            check = True
 
 
 def main():

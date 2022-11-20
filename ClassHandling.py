@@ -69,6 +69,15 @@ def getRoom(building: str, number: int) -> Room or None:
     return None
 
 
+def getRooms(key: KeyCopy or int) -> [Room]:
+    returnList = list()
+    for door in getDoors(key):
+        room: Room = getRoom(door.building_type, door.room_number)
+        if room is not None:
+            returnList.append(room)
+    return returnList
+
+
 def addRoom(building: BuildingType or str, number: int) -> Room or None:
     """
     Adds a room to the database if it does not exist.

@@ -8,7 +8,7 @@ class DoorName(Base):
     __tablename__ = "door_names"
     location = Column("location", String(40), nullable=False, primary_key=True)
 
-    door = relationship("Door")
+    door = relationship("Door", lazy="subquery")
 
     def __init__(self, location: str):
         self.location = location

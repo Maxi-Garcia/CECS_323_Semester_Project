@@ -9,8 +9,8 @@ class DoorHook(Base):
     hook_id = Column("hook_id", Integer, ForeignKey("hooks.id"), nullable=False, primary_key=True)
     door_id = Column("door_id", Integer, ForeignKey("doors.id"), nullable=False, primary_key=True)
 
-    door = relationship("Door", back_populates="hook_list")
-    hook = relationship("Hook", back_populates="door_list")
+    door = relationship("Door", back_populates="hook_list", lazy="subquery")
+    hook = relationship("Hook", back_populates="door_list", lazy="subquery")
 
     def __init__(self, hook_id: int, door_id: int):
         self.hook_id = hook_id

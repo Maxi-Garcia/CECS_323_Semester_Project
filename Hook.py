@@ -29,7 +29,8 @@ class Hook(Base):
         self.door_list.append(door_hook)
 
     def __str__(self):
-        return f"Hook {self.id} opens {self.door_list}"
+        doors = [x.door for x in self.door_list]
+        return f"Hook {self.id} opens {doors}"
 
     def __repr__(self):
         return self.__str__()

@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 import DoorHook
 import Door
 from KeyCopy import KeyCopy
-from main import Base
+from sqla_util import Base
 from DoorHook import DoorHook
 
 

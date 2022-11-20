@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 import DoorHook
 import Hook
-from main import Base
+from sqla_util import Base
 from DoorHook import DoorHook
 
 

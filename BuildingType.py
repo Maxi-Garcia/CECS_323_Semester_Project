@@ -2,7 +2,7 @@ from sqlalchemy import String, Column
 from sqlalchemy.orm import relationship
 
 import Room
-from main import Base
+from sqla_util import Base
 
 
 class BuildingType(Base):

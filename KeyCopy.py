@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Sequence, ForeignKey
 from sqlalchemy.orm import relationship
 
-from main import Base
+from sqla_util import Base
 
 
 class KeyCopy(Base):
@@ -20,3 +20,9 @@ class KeyCopy(Base):
 
     def __repr__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        if type(other) != KeyCopy:
+            return False
+        other: KeyCopy
+        return (self.key_id == other.key_id) and (self.hooks_id == other.hooks_id)

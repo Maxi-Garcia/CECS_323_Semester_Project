@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from main import Base
+from sqla_util import Base
 
 
 class DoorHook(Base):

@@ -1,7 +1,7 @@
 from sqlalchemy import String, Column
 from sqlalchemy.orm import relationship
 
-from main import Base
+from sqla_util import Base
 
 
 class DoorName(Base):

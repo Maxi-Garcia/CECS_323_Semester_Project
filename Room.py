@@ -2,7 +2,7 @@ from sqlalchemy import String, Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 import Request
-from main import Base
+from sqla_util import Base
 
 
 class Room(Base):
@@ -11,7 +11,7 @@ class Room(Base):
                            nullable=False, primary_key=True)
     number = Column("number", Integer, nullable=False, primary_key=True)
 
-    employee_list: [Request] = relationship("Request")
+    employee_list: [Request] = relationship("Request", lazy="subquery")
 
     type = relationship("BuildingType", back_populates="rooms")
 

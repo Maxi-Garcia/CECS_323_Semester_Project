@@ -238,7 +238,7 @@ def addHook(hook_id: int, doors: [Door] = None) -> Hook or None:
 
 def getKey(key_id: int) -> KeyCopy or None:
     with Session() as sess:
-        statement = select(Hook).filter((KeyCopy.key_id == key_id))
+        statement = select(KeyCopy).filter((KeyCopy.key_id == key_id))
         result = sess.execute(statement)
         for item in result.scalars():
             return item
@@ -249,7 +249,7 @@ def getKeys(hook: int or Hook) -> [KeyCopy]:
     returnList = list()
     hook: int = hook.id if type(hook) is Hook else hook
     with Session() as sess:
-        statement = select(Hook).filter((KeyCopy.hooks_id == hook))
+        statement = select(KeyCopy).filter((KeyCopy.hooks_id == hook))
         result = sess.execute(statement)
         for item in result.scalars():
             returnList.append(item)
@@ -374,4 +374,35 @@ def getRequests(employee: Employee or int) -> [Request]:
         statement = select(Request).filter((Request.employees_id == employee))
         for item in sess.execute(statement).scalars():
             returnList.append(item)
+    return returnList
+
+
+def getRequestsByRoom(room: Room) -> [Request]:
+    returnList: [Request] = list()
+    with Session() as sess:
+        statement = select(Request).filter((Request.building_type == room.building_type) & (Request.rooms_number == room.number))
+        for item in sess.execute(statement).scalars():
+            returnList.append(item)
+    return returnList
+
+
+def getEmployee(employee_id: int) -> Employee or None:
+    with Session() as sess:
+        statement = select(Employee).filter((Employee.id == employee_id))
+        result = sess.execute(statement)
+        for item in result.scalars():
+            return item
+    return None
+
+
+def getKeysByEmployee(employee: Employee) -> [KeyCopy]:
+    returnList = list()
+    with Session() as sess:
+        request_statement = select(Request).filter((Request.employees_id == employee.id))
+        for request in sess.execute(request_statement).scalars():
+            if not getRequestStatus(request) == RequestStatus.OUT:
+                continue
+            statement = select(KeyCopy).filter((KeyCopy.key_id == request.key_id))
+            for item in sess.execute(statement).scalars():
+                returnList.append(item)
     return returnList
